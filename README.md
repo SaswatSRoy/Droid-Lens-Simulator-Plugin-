@@ -153,57 +153,169 @@ All options have sensible defaults. Override only what you need.
 
 ---
 
-## 🧠 On-Device LLM Setup (Gemma 2B)
+## 🧠 LLM Setup (OpenRouter API)
 
-Droid Lens uses **Gemma 2B IT INT4** via MediaPipe Tasks GenAI — inference runs 100% on-device.
+Droid Lens integrates with the **OpenRouter API** and uses **Poolside: Laguna XS.2 (Free)** to generate intelligent performance diagnoses and optimization suggestions.
 
-### Download the model
+Since inference is performed in the cloud:
 
-1. Visit [ai.google.dev/gemma](https://ai.google.dev/gemma) or [kaggle.com/models/google/gemma](https://www.kaggle.com/models/google/gemma)
-2. Download `gemma-2b-it-cpu-int4.bin` (~1.3 GB)
-3. Push to the device:
-   ```bash
-   adb push gemma-2b-it-cpu-int4.bin /data/local/tmp/
-   ```
-   Or use `ModelDownloader` to fetch it at runtime (see `LLMInferenceEngine.kt`)
+- ☁️ No large AI model needs to be downloaded.
+- 📱 Minimal impact on device storage and memory.
+- ⚡ No significant CPU/GPU usage during profiling.
+- 🔄 Model updates are handled remotely.
 
-### Point Droid Lens to it
+---
+
+## 🔑 Getting an OpenRouter API Key
+
+### 1. Create an OpenRouter Account
+
+Sign up for a free account on OpenRouter.
+
+### 2. Generate an API Key
+
+Navigate to:
+
+**Account Settings → API Keys**
+
+Create a new API key and keep it secure.
+
+### 3. Configure Droid Lens
+
+Pass the generated API key during SDK initialization.
 
 ```kotlin
 DroidLens.init(this) {
     llmEnabled(true)
-    llmModelPath("/data/local/tmp/gemma-2b-it-cpu-int4.bin")
+    openRouterApiKey("sk-or-v1-...")
 }
 ```
 
-### Device requirements
+---
 
-| RAM | Capability |
-|---|---|
-| ≥ 6 GB | Full LLM inference ✅ |
-| 4–6 GB | May work; monitor for OOM |
-| < 4 GB | Set `llmEnabled(false)` — rule-based fallbacks kick in automatically |
+## 🌐 Required Permission
 
-**No internet required.** All inference is local. Your profiling data never leaves the device.
+Because Droid Lens communicates with OpenRouter over the internet, ensure your application declares the following permission in the Android Manifest:
 
-### Fallback mode (no model)
-
-If `llmEnabled = false` or the model file is missing, Droid Lens falls back to built-in rule-based diagnoses:
-
-```
-JankFrame     → "Frame exceeded render budget. Check for blocking operations
-                  on the main thread. Consider LaunchedEffect for async work."
-
-RecompositionSpike → "Excessive recomposition detected. Common causes: unstable
-                       State, non-stable class parameters, lambda capture creating
-                       new instances each composition."
-
-MemoryLeak    → "Object retained after expected lifecycle end. Check for: static
-                  references, unregistered listeners, inner class holding outer
-                  class reference."
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
 ```
 
 ---
+
+## 🔒 Security Best Practices
+
+> Never hardcode or commit API keys to public repositories.
+
+Recommended approach:
+
+- Store secrets in `local.properties`
+- Expose them through `BuildConfig`
+- Exclude sensitive files from version control
+
+Example:
+
+```properties
+# local.properties
+OPENROUTER_API_KEY=sk-or-v1-...
+```
+
+```kotlin
+openRouterApiKey(BuildConfig.OPENROUTER_API_KEY)
+```
+
+---
+
+# 🔄 Fallback Mode
+
+Droid Lens is designed to work even when AI-based diagnosis is unavailable.
+
+The SDK automatically falls back to its built-in rule engine when:
+
+- ❌ `llmEnabled(false)` is configured
+- 📶 No internet connection is available
+- 🔑 OpenRouter API key is missing or invalid
+- ⚠️ LLM requests fail unexpectedly
+
+This ensures profiling insights remain available without external dependencies.
+
+---
+
+## 📊 Built-in Diagnostic Rules
+
+### 🎯 JankFrame
+
+**Detected Issue**
+
+Frame rendering exceeded the target render budget.
+
+**Diagnosis**
+
+```text
+Frame exceeded render budget.
+Check for blocking operations on the main thread.
+Consider using LaunchedEffect or background execution
+for expensive work.
+```
+
+---
+
+### 🔄 RecompositionSpike
+
+**Detected Issue**
+
+Excessive or unnecessary Compose recompositions.
+
+**Diagnosis**
+
+```text
+Excessive recomposition detected.
+
+Common causes:
+• Unstable State objects
+• Non-stable class parameters
+• Lambda captures creating new instances during composition
+```
+
+---
+
+### 🧩 MemoryLeak
+
+**Detected Issue**
+
+Objects remain in memory after their expected lifecycle has ended.
+
+**Diagnosis**
+
+```text
+Object retained after expected lifecycle end.
+
+Check for:
+• Static references
+• Unregistered listeners
+• Inner classes holding outer class references
+• Lifecycle-aware cleanup issues
+```
+
+---
+
+## ✅ Recommended Configuration
+
+For the best developer experience:
+
+```kotlin
+DroidLens.init(this) {
+    llmEnabled(true)
+    openRouterApiKey(BuildConfig.OPENROUTER_API_KEY)
+}
+```
+
+This enables:
+
+- 🤖 AI-powered diagnostics
+- 📈 More contextual performance analysis
+- 🛠 Actionable optimization recommendations
+- 🔄 Automatic fallback to rule-based insights when needed
 
 ## 🏗️ Architecture
 
