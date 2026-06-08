@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Droid Lens</string>
+    <string name="demo_app_title">Droid Lens — Demo App</string>
+
+    <!-- Startup Simulator -->
+    <string name="startup_metrics_title">🚀 Startup Metrics</string>
+    <string name="app_on_create">Application.onCreate()</string>
+    <string name="ttff">Time to First Frame</string>
+    <string name="tti">Time to Interactive</string>
+    <string name="total_startup">Total Startup</string>
+    <string name="waiting_touch">Waiting for touch...</string>
+    <string name="startup_not_captured">Startup metrics not yet captured...</string>
+    <string name="startup_not_available">Startup metrics not available...</string>
+    <string name="simulate_slow_init">Simulate Slow Init (500ms block)</string>
+
+    <!-- Jank Simulator -->
+    <string name="fps_label">FPS: %1$d</string>
+    <string name="avg_frame_label">Avg Frame: %1$.2fms</string>
+    <string name="p95_frame_label">p95 Frame: %1$.2fms</string>
+    <string name="jank_frames_label">Jank Frames: %1$d</string>
+    <string name="simulate_jank">Simulate Jank (50ms)</string>
+    <string name="simulate_sustained_jank">Simulate Sustained Jank (3s)</string>
+
+    <!-- Leak Simulator -->
+    <string name="activity_leaked">This Activity is now LEAKED!</string>
+    <string name="memory_leak_tracking">Memory Leak Tracking</string>
+    <string name="memory_usage_label">Used: %1$.1f MB / %2$.1f MB</string>
+    <string name="usage_percent_label">Usage: %1$.1f%%</string>
+    <string name="watched_retained_label">Watched: %1$d | Retained: %2$d</string>
+
+    <!-- Recomposition Demo -->
+    <string name="recomposition_tracking">Recomposition Tracking</string>
+    <string name="ticker_label">Ticker (100ms): %1$d</string>
+    <string name="rapid_counter_label">Rapid Counter: %1$d</string>
+    <string name="tracked_count_label">Tracked Count (Last Sec): %1$d</string>
+</resources>

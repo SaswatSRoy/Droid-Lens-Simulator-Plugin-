@@ -1,0 +1,30 @@
+<resources>
+    <string name="lib_name">Droid Lens Core</string>
+
+    <!-- Metrics Dashboard -->
+    <string name="fps_unit">FPS</string>
+    <string name="ms_unit">ms</string>
+    <string name="startup_label">🚀 Startup</string>
+    <string name="init_label">init %1$dms</string>
+    <string name="ttff_label">TTFF %1$dms</string>
+    <string name="tti_label">TTI %1$dms</string>
+    <string name="mb_unit">MB</string>
+
+    <!-- Issue Card -->
+    <string name="dismiss_icon">✕</string>
+    <string name="llm_suggestion_prefix">💡 %1$s</string>
+    <string name="confidence_label">Confidence: %1$d%%</string>
+
+    <!-- LLM Status -->
+    <string name="ai_ready">AI Ready</string>
+    <string name="ai_loading">AI Loading…</string>
+    <string name="ai_analyzing">Analyzing…</string>
+    <string name="ai_unavailable">AI Unavailable</string>
+    <string name="share_report_title">Share Droid Lens Report</string>
+
+    <!-- Regression Types -->
+    <string name="type_jank">Jank Frame</string>
+    <string name="type_recomposition">Recomposition Spike</string>
+    <string name="type_leak">Memory Leak</string>
+    <string name="type_startup">Slow Startup</string>
+</resources>
